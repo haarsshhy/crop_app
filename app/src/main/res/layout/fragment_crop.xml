@@ -112,9 +112,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:background="@color/primary_light"
             android:gravity="center"
-            android:textColor="@color/primary_dark"
-            android:textSize="20sp"
+            android:padding="16dp"
+            android:textColor="#006400"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:visibility="gone" />
 

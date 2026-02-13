@@ -12,6 +12,12 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    <Button
+        android:id="@+id/btnExitApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exit App" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"

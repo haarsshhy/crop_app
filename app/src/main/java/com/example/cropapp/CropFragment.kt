@@ -1,6 +1,9 @@
 package com.example.cropapp
 
+import android.app.ProgressDialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,16 +37,27 @@ class CropFragment : Fragment() {
             if (n.isEmpty() || p.isEmpty() || k.isEmpty()) {
                 Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
             } else {
-                // Placeholder logic for crop recommendation
-                val recommendedCrop = "Rice (Suggested based on soil data)"
-                tvResult.text = "Recommended Crop: $recommendedCrop"
-                tvResult.visibility = View.VISIBLE
+                val progressDialog = ProgressDialog(context)
+                progressDialog.setMessage("Analyzing data...")
+                progressDialog.setCancelable(false)
+                progressDialog.show()
 
-                // Trigger ACTIONABLE notification via MainActivity
-                (activity as? MainActivity)?.showActionableNotification(
-                    "Recommendation Ready",
-                    "We suggest planting $recommendedCrop. Tap to view market for seeds."
-                )
+                // Simulate a delay for processing
+                Handler(Looper.getMainLooper()).postDelayed({
+                    progressDialog.dismiss()
+                    // Placeholder logic for crop recommendation
+                    val recommendedCrop = "Rice (Suggested based on soil data)"
+                    tvResult.text = "Recommended Crop: $recommendedCrop"
+                    tvResult.visibility = View.VISIBLE
+
+                    Toast.makeText(context, "Crop recommendation is ready!", Toast.LENGTH_SHORT).show()
+
+                    // Trigger ACTIONABLE notification via MainActivity
+                    (activity as? MainActivity)?.showActionableNotification(
+                        "Recommendation Ready",
+                        "We suggest planting $recommendedCrop. Tap to view market for seeds."
+                    )
+                }, 2000) // 2-second delay
             }
         }
 
