@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/gray_light">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -26,62 +25,61 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupMarketScope"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_search"
-                app:iconifiedByDefault="false"
-                app:queryHint="Search fertilizers, seeds..." />
+                app:singleSelection="true">
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:scrollbars="none">
-
-                <com.google.android.material.chip.ChipGroup
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipGlobal"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:singleSelection="true">
+                    android:text="Global"
+                    android:checked="true"
+                    app:chipBackgroundColor="@color/chip_state_colors"
+                    android:textColor="@color/chip_text_state_colors" />
 
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="All"
-                        android:checked="true" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLocal"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Local"
+                    app:chipBackgroundColor="@color/chip_state_colors"
+                    android:textColor="@color/chip_text_state_colors"/>
 
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fertilizers" />
+            </com.google.android.material.chip.ChipGroup>
 
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Seeds" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/location_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/primary_light"
+                app:cardCornerRadius="8dp"
+                android:visibility="gone">
 
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tools" />
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Location: Fetching..." />
+            </com.google.android.material.card.MaterialCardView>
 
-                </com.google.android.material.chip.ChipGroup>
-            </HorizontalScrollView>
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMarket"
+        android:id="@+id/rvShops"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
+        android:paddingVertical="8dp"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@android:layout/simple_list_item_2" />
+        tools:listitem="@layout/item_shop" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

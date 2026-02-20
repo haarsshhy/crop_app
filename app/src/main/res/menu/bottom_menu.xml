@@ -1,34 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/nav_crop"
-        android:title="Crops"
-        android:icon="@android:drawable/ic_menu_agenda"/>
-
+        android:icon="@android:drawable/ic_menu_crop"
+        android:title="Crop" />
     <item
         android:id="@+id/nav_weather"
-        android:title="Weather"
-        android:icon="@android:drawable/ic_menu_compass"/>
-
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="Weather" />
     <item
         android:id="@+id/nav_market"
-        android:title="Market"
-        android:icon="@android:drawable/ic_menu_view"/>
-
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="Market" />
     <item
         android:id="@+id/nav_scanner"
-        android:title="Scanner"
-        android:icon="@android:drawable/ic_menu_camera"/>
-
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Scanner" />
     <item
         android:id="@+id/nav_profile"
-        android:title="Profile"
-        android:icon="@android:drawable/ic_menu_myplaces"/>
-
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Profile" />
     <item
         android:id="@+id/nav_friends"
-        android:title="Friends"
-        android:icon="@android:drawable/ic_menu_my_calendar"/>
-
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="Friends" />
 </menu>
