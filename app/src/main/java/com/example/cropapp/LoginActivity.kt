@@ -36,7 +36,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         tvNewUser.setOnClickListener {
-            Toast.makeText(this, "Sign Up clicked", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
 
         tvForgotPassword.setOnClickListener {
