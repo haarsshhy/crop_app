@@ -24,6 +24,7 @@
             app:tint="@color/white" />
 
         <LinearLayout
+            android:id="@+id/shop_info_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -47,6 +48,13 @@
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="@color/gray" />
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnShareSms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_share" />
 
     </LinearLayout>
 

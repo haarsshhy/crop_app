@@ -1,8 +1,10 @@
 package com.example.cropapp
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.material.chip.ChipGroup
 import java.util.Locale
 
@@ -109,26 +112,36 @@ class MarketFragment : Fragment() {
         ) {
             return
         }
-        fusedLocationClient.lastLocation
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
             .addOnSuccessListener { location ->
                 if (location != null) {
+                    // Immediately load the shops and show coordinates
+                    setupShopList()
+                    val lat = location.latitude
+                    val lon = location.longitude
+                    tvLocation.text = "Location: (Lat: $lat, Lon: $lon)"
+
+                    // Try to get the city name as an enhancement
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
                     try {
-                        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                        val lat = location.latitude
-                        val lon = location.longitude
+                        val addresses = geocoder.getFromLocation(lat, lon, 1)
                         if (addresses != null && addresses.isNotEmpty()) {
                             val city = addresses[0].locality
-                            tvLocation.text = "Location: $city (Lat: $lat, Lon: $lon)"
-                            setupShopList()
+                            if (city != null) {
+                                tvLocation.text = "Location: $city (Lat: $lat, Lon: $lon)"
+                            }
                         }
                     } catch (e: Exception) {
-                        tvLocation.text = "Location: Error"
+                        // Geocoder failed, but the shops are already loaded. This is fine.
                     }
-
                 } else {
-                    tvLocation.text = "Location: Not available"
+                    tvLocation.text = "Location: Not available. Please enable location."
+                    rvShops.adapter = null // Clear shops if location is off
                 }
+            }
+            .addOnFailureListener {
+                tvLocation.text = "Location: Failed to get location. Ensure GPS is enabled."
+                rvShops.adapter = null // Clear shops on failure
             }
     }
 
@@ -140,13 +153,23 @@ class MarketFragment : Fragment() {
             Shop("Farmer's Friend", "101 Cultivator Ln", 12.9746, 77.5976)
         )
 
-        val adapter = ShopAdapter(shops) { shop ->
-            Toast.makeText(
-                context,
-                "Lat: ${shop.latitude}, Lon: ${shop.longitude}",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+        val adapter = ShopAdapter(shops, 
+            onShopClick = { shop ->
+                Toast.makeText(
+                    context,
+                    "Lat: ${shop.latitude}, Lon: ${shop.longitude}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            },
+            onShareClick = { shop ->
+                val smsBody = "Check out this shop: ${shop.name} at ${shop.address}"
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("smsto:")
+                    putExtra("sms_body", smsBody)
+                }
+                startActivity(intent)
+            }
+        )
         rvShops.adapter = adapter
     }
 }

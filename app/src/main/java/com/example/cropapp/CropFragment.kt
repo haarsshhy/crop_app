@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.material.textfield.TextInputEditText
 import java.util.Locale
 
@@ -126,26 +127,40 @@ class CropFragment : Fragment() {
         ) {
             return
         }
-        fusedLocationClient.lastLocation
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
             .addOnSuccessListener { location ->
                 if (location != null) {
+                    val lat = location.latitude
+                    val lon = location.longitude
+
+                    // Immediately show suggestions and coordinates
+                    locationSuggestionCard.visibility = View.VISIBLE
+                    tvLocationInfo.text = "Suggestions for Lat: $lat, Lon: $lon"
+                    tvLocationCropSuggestion.text = getCropSuggestion(lat)
+
+                    // Try to get the city name as an enhancement
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
                     try {
-                        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                        val addresses = geocoder.getFromLocation(lat, lon, 1)
                         if (addresses != null && addresses.isNotEmpty()) {
                             val city = addresses[0].locality
-                            val lat = location.latitude
-                            val lon = location.longitude
-                            tvLocationInfo.text = "Suggestions for $city (Lat: $lat, Lon: $lon)"
-                            tvLocationCropSuggestion.text = getCropSuggestion(lat)
-                            locationSuggestionCard.visibility = View.VISIBLE
+                            if (city != null) {
+                                tvLocationInfo.text = "Suggestions for $city (Lat: $lat, Lon: $lon)"
+                            }
                         }
                     } catch (e: Exception) {
-                        locationSuggestionCard.visibility = View.GONE
+                        // Geocoder failed, but suggestions are already shown. This is fine.
                     }
                 } else {
-                    locationSuggestionCard.visibility = View.GONE
+                    locationSuggestionCard.visibility = View.VISIBLE
+                    tvLocationInfo.text = "Location not available"
+                    tvLocationCropSuggestion.text = "Please enable location services for suggestions."
                 }
+            }
+            .addOnFailureListener {
+                locationSuggestionCard.visibility = View.VISIBLE
+                tvLocationInfo.text = "Location failed"
+                tvLocationCropSuggestion.text = "Failed to get location. Please ensure GPS is enabled."
             }
     }
 

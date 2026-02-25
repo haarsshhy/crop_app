@@ -44,7 +44,9 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        handleIntent(intent)
+        if (savedInstanceState == null) {
+            loadFragment(CropFragment())
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -73,24 +75,6 @@ class MainActivity : AppCompatActivity() {
             }
             .setNegativeButton("No", null)
             .show()
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        handleIntent(intent)
-    }
-
-    private fun handleIntent(intent: Intent) {
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
-        if (intent.getStringExtra("navigateTo") == "market") {
-            loadFragment(MarketFragment())
-            bottomNav.selectedItemId = R.id.nav_market
-        } else {
-            if (supportFragmentManager.findFragmentById(R.id.container) == null) {
-                loadFragment(CropFragment())
-            }
-        }
     }
 
     private fun loadFragment(fragment: Fragment) {
